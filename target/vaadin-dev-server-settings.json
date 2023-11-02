@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/./frontend/generated/jar-resources",
+  "staticOutput": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/target/classes/META-INF/VAADIN/config",
+  "frontendBundleOutput": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/target/classes/META-INF/VAADIN/webapp",
+  "devBundleOutput": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/src/main/dev-bundle/config",
+  "jarResourcesFolder": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/./frontend/generated/jar-resources",
+  "themeName": "my-app",
+  "clientServiceWorkerSource": "/Users/faol/AndroidStudioProjects/BACKEND/tutorial_vaadin/target/sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
