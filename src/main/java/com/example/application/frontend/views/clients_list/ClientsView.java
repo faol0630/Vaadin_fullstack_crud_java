@@ -43,36 +43,38 @@ public class ClientsView extends Div {
     public ClientsView(ClientController clientController) {
 
         verticalLayout = new VerticalLayout();
-        btnGoToAddNewClient = new Button("New Client");
+        btnGoToAddNewClient = new Button("New Client", event -> UI.getCurrent().navigate(NewClientView.class));
         client_grid = new Grid<>(ClientDTO.class);
-        btnDeleteAll = new Button("Delete All");
-        btnSearchByLastname = new Button("Search by lastname");
+
+        btnDeleteAll = new Button("Delete All", event -> {
+            deleteAllDialog = new DeleteAllDialog(clientController, client_grid, clientsSize);
+            deleteAllDialog.open();
+        });
+
+        btnSearchByLastname = new Button("Search by lastname", event -> UI.getCurrent().navigate(SearchByLastname.class));
         horizontalLayout = new HorizontalLayout();
         clientsSize = new TextField("Number of clients:");
 
         client_grid.setColumns("id_client", "identificationNumber", "name", "lastname");
-        client_grid.setWidth("80%");
+        //client_grid.setWidth("80%");
+        client_grid.setWidthFull();
         client_grid.setItems(clientController.findAllClients().getBody());
         client_grid.setSelectionMode(Grid.SelectionMode.SINGLE); //1)To be able to use in a Dialog
 
         //Add delete button inside the grid:
         client_grid.addComponentColumn(client -> {
 
-            btnDelete = new Button("Delete");//Create a button in each row
-            btnDelete.addClickListener(event -> {
-
+            btnDelete = new Button("Delete", event -> {
                 deleteClientDialog = new DeleteClientDialog(client, clientController, client_grid, clientsSize);
                 deleteClientDialog.open();
+            });//Create a button in each row
 
-            });
             return btnDelete;
         }).setHeader("Delete");
 
         //Add update button inside the grid:
         client_grid.addComponentColumn(client -> {
-            btnUpdate = new Button("Update");
-            btnUpdate.addClickListener(event ->{
-
+            btnUpdate = new Button("Update", event -> {
                 Client selectedClient = clientController.findClientById(client.getId_client());
                 editDialog = new EditDialog(selectedClient, clientController);
                 editDialog.open();
@@ -84,25 +86,10 @@ public class ClientsView extends Div {
                         client_grid.setItems(clientController.findAllClients().getBody());
                     }
                 });
-
             });
+
             return btnUpdate;
         }).setHeader("Update");
-
-        btnGoToAddNewClient.addClickListener(event -> {
-            UI.getCurrent().navigate(NewClientView.class);
-        });
-
-        btnDeleteAll.addClickListener(event -> {
-
-            deleteAllDialog = new DeleteAllDialog(clientController, client_grid, clientsSize);
-            deleteAllDialog.open();
-
-        });
-
-        btnSearchByLastname.addClickListener(e ->{
-            UI.getCurrent().navigate(SearchByLastname.class);
-        });
 
         long size = clientController.clientsSize().getBody();
         clientsSize.setValue(String.valueOf(size));

@@ -23,19 +23,13 @@ public class EditDialog extends Dialog {
         identityNumber = new TextField("Update identity number");
         client_name = new TextField("Update your name");
         client_lastname = new TextField("Update your lastname");
-        Button btnUpdate = new Button("Update Client");
+        Button btnUpdate = new Button("Update Client", event ->  updateClient(client, clientController));
+        btnUpdate.addClickShortcut(Key.ENTER);
 
         //Data in the textField when the Dialog is opened:
         identityNumber.setValue(client.getIdentificationNumber());
         client_name.setValue(client.getName());
         client_lastname.setValue(client.getLastname());
-
-        btnUpdate.addClickListener(event -> {
-            updateClient(client, clientController);
-
-
-        });
-        btnUpdate.addClickShortcut(Key.ENTER);
 
         verticalLayout.add(identityNumber, client_name, client_lastname, btnUpdate);
         verticalLayout.setMargin(true);

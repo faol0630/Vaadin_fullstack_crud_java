@@ -24,19 +24,10 @@ public class DeleteClientDialog extends Dialog {
         horizontalLayoutText = new HorizontalLayout();
         horizontalLayoutButtons = new HorizontalLayout();
         verticalLayout = new VerticalLayout();
-        btnYes = new Button("Yes");
-        btnNo = new Button("No");
+        btnYes = new Button("Yes", event -> deleteClient(clientDTO, clientController, client_grid, clientsSize));
+        btnNo = new Button("No", event -> close());
         question = new Text("Are you sure to delete the client with id " + clientDTO.getId_client() + " ?");
 
-        btnYes.addClickListener(event -> {
-
-            deleteClient(clientDTO, clientController, client_grid, clientsSize);
-
-        });
-
-        btnNo.addClickListener(event ->{
-            close();
-        });
 
         horizontalLayoutText.add(question);
         horizontalLayoutButtons.add(btnYes, btnNo);
@@ -50,10 +41,12 @@ public class DeleteClientDialog extends Dialog {
     }
 
     public void deleteClient(ClientDTO clientDTO, ClientController clientController, Grid<ClientDTO>client_grid, TextField clientsSize){
+
         clientController.deleteClient(clientDTO.getId_client());
         client_grid.setItems( clientController.findAllClients().getBody());
         long size = clientController.clientsSize().getBody();
         clientsSize.setValue(String.valueOf(size));
         close();
+
     }
 }

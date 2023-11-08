@@ -24,19 +24,9 @@ public class DeleteAllDialog extends Dialog {
         horizontalLayoutText = new HorizontalLayout();
         horizontalLayoutButtons = new HorizontalLayout();
         verticalLayout = new VerticalLayout();
-        btnYes = new Button("Yes");
-        btnNo = new Button("No");
+        btnYes = new Button("Yes", event -> deleteAll(clientController, client_grid, clientsSize));
+        btnNo = new Button("No", event -> close());
         question = new Text("Are you sure to delete all clients? ");
-
-        btnYes.addClickListener(event -> {
-
-            deleteAll(clientController, client_grid, clientsSize);
-
-        });
-
-        btnNo.addClickListener(event ->{
-            close();
-        });
 
         horizontalLayoutText.add(question);
         horizontalLayoutButtons.add(btnYes, btnNo);
@@ -50,11 +40,13 @@ public class DeleteAllDialog extends Dialog {
     }
 
     public void deleteAll(ClientController clientController,Grid<ClientDTO> client_grid, TextField clientsSize){
+
         clientController.deleteAll();
         client_grid.setItems( clientController.findAllClients().getBody());
         long size = clientController.clientsSize().getBody();
         clientsSize.setValue(String.valueOf(size));
         close();
+
     }
 
 }

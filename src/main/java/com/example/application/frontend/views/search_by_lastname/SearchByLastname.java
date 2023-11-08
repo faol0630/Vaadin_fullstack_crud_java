@@ -34,10 +34,8 @@ public class SearchByLastname extends Div {
         verticalLayout = new VerticalLayout();
         horizontalLayout = new HorizontalLayout();
         client_lastname = new TextField("Your lastname: ");
-        searchByLastname = new Button("Search ");
-        goToClientsList = new Button("Go to client's list");
-
-        searchByLastname.addClickListener(e -> {
+        goToClientsList = new Button("Go to client's list", event -> UI.getCurrent().navigate(ClientsView.class));
+        searchByLastname = new Button("Search ", event -> {
 
             String lastname = client_lastname.getValue();
 
@@ -55,10 +53,6 @@ public class SearchByLastname extends Div {
 
         });
         searchByLastname.addClickShortcut(Key.ENTER);
-
-        goToClientsList.addClickListener(e ->{
-            UI.getCurrent().navigate(ClientsView.class);
-        });
 
         horizontalLayout.add(searchByLastname, goToClientsList);
 

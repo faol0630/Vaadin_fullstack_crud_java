@@ -34,9 +34,7 @@ public class NewClientView extends Div {
         client_name = new TextField("Your name: ");
         client_lastname = new TextField("Your lastname: ");
         passwordTF = new TextField("Your password: ");
-        newClient = new Button("Add Client");
-
-        newClient.addClickListener(e -> {
+        newClient = new Button("Add Client", event -> {
 
             if (
                     !identityNumber.isEmpty() &&

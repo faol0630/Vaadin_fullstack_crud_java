@@ -21,16 +21,13 @@ public class ClientByLastnameDialog extends Dialog {
         identityNumber = new TextField();
         client_name = new TextField();
         client_lastname = new TextField();
-        btn_close = new Button("Close");
+        btn_close = new Button("Close", event -> close());
+        btn_close.addClickShortcut(Key.ENTER);
 
         identityNumber.setValue(clientDTO.getIdentificationNumber());
         client_name.setValue(clientDTO.getName());
         client_lastname.setValue(clientDTO.getLastname());
 
-        btn_close.addClickListener(e -> {
-            close();
-        });
-        btn_close.addClickShortcut(Key.ENTER);
 
         verticalLayout.add(identityNumber, client_name, client_lastname, btn_close);
         verticalLayout.setMargin(true);
