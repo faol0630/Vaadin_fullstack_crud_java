@@ -3,6 +3,7 @@ package com.example.application.frontend.dialogs;
 import com.example.application.backend.models.ClientDTO;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -22,6 +23,7 @@ public class ClientByLastnameDialog extends Dialog {
         client_name = new TextField();
         client_lastname = new TextField();
         btn_close = new Button("Close", event -> close());
+        btn_close.addThemeVariants(ButtonVariant.LUMO_ERROR);
         btn_close.addClickShortcut(Key.ENTER);
 
         identityNumber.setValue(clientDTO.getIdentificationNumber());

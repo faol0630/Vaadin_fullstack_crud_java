@@ -4,6 +4,7 @@ import com.example.application.backend.controller.ClientController;
 import com.example.application.backend.models.ClientDTO;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -25,7 +26,9 @@ public class DeleteAllDialog extends Dialog {
         horizontalLayoutButtons = new HorizontalLayout();
         verticalLayout = new VerticalLayout();
         btnYes = new Button("Yes", event -> deleteAll(clientController, client_grid, clientsSize));
+        btnYes.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         btnNo = new Button("No", event -> close());
+        btnNo.addThemeVariants(ButtonVariant.LUMO_ERROR);
         question = new Text("Are you sure to delete all clients? ");
 
         horizontalLayoutText.add(question);

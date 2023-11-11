@@ -11,6 +11,7 @@ import com.example.application.frontend.views.search_by_lastname.SearchByLastnam
 import com.example.application.frontend.views.new_client.NewClientView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -44,14 +45,17 @@ public class ClientsView extends Div {
 
         verticalLayout = new VerticalLayout();
         btnGoToAddNewClient = new Button("New Client", event -> UI.getCurrent().navigate(NewClientView.class));
+        btnGoToAddNewClient.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         client_grid = new Grid<>(ClientDTO.class);
 
         btnDeleteAll = new Button("Delete All", event -> {
             deleteAllDialog = new DeleteAllDialog(clientController, client_grid, clientsSize);
             deleteAllDialog.open();
         });
+        btnDeleteAll.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         btnSearchByLastname = new Button("Search by lastname", event -> UI.getCurrent().navigate(SearchByLastname.class));
+        btnSearchByLastname.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         horizontalLayout = new HorizontalLayout();
         clientsSize = new TextField("Number of clients:");
 
@@ -68,6 +72,7 @@ public class ClientsView extends Div {
                 deleteClientDialog = new DeleteClientDialog(client, clientController, client_grid, clientsSize);
                 deleteClientDialog.open();
             });//Create a button in each row
+            btnDelete.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
             return btnDelete;
         }).setHeader("Delete");
@@ -87,6 +92,7 @@ public class ClientsView extends Div {
                     }
                 });
             });
+            btnUpdate.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
             return btnUpdate;
         }).setHeader("Update");

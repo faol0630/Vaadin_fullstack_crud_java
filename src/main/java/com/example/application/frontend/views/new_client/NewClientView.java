@@ -8,6 +8,7 @@ import com.example.application.frontend.views.clients_list.ClientsView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,7 +25,7 @@ public class NewClientView extends Div {
     private final TextField client_name;
     private final TextField client_lastname;
     private final TextField passwordTF;
-    private final Button newClient;
+    private final Button newClientBtn;
 
     //Constructor:
     public NewClientView(ClientController clientController){
@@ -34,7 +35,7 @@ public class NewClientView extends Div {
         client_name = new TextField("Your name: ");
         client_lastname = new TextField("Your lastname: ");
         passwordTF = new TextField("Your password: ");
-        newClient = new Button("Add Client", event -> {
+        newClientBtn = new Button("Add Client", event -> {
 
             if (
                     !identityNumber.isEmpty() &&
@@ -50,9 +51,10 @@ public class NewClientView extends Div {
             }
 
         });
-        newClient.addClickShortcut(Key.ENTER);
+        newClientBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newClientBtn.addClickShortcut(Key.ENTER);
 
-        verticalLayout.add(identityNumber, passwordTF, client_name, client_lastname, newClient);
+        verticalLayout.add(identityNumber, passwordTF, client_name, client_lastname, newClientBtn);
         verticalLayout.setMargin(true);
         verticalLayout.setPadding(true);
         verticalLayout.setSpacing(true);

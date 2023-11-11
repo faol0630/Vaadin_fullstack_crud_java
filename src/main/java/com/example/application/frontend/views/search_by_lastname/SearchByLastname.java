@@ -9,6 +9,7 @@ import com.example.application.frontend.views.clients_list.ClientsView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -25,8 +26,8 @@ public class SearchByLastname extends Div {
     private final VerticalLayout verticalLayout;
     private HorizontalLayout horizontalLayout;
     private final TextField client_lastname;
-    private final Button searchByLastname;
-    private Button goToClientsList;
+    private final Button searchByLastnameBtn;
+    private Button goToClientsListBtn;
 
     //Constructor
     public SearchByLastname(ClientController clientController){
@@ -34,8 +35,8 @@ public class SearchByLastname extends Div {
         verticalLayout = new VerticalLayout();
         horizontalLayout = new HorizontalLayout();
         client_lastname = new TextField("Your lastname: ");
-        goToClientsList = new Button("Go to client's list", event -> UI.getCurrent().navigate(ClientsView.class));
-        searchByLastname = new Button("Search ", event -> {
+        goToClientsListBtn = new Button("Go to client's list", event -> UI.getCurrent().navigate(ClientsView.class));
+        searchByLastnameBtn = new Button("Search ", event -> {
 
             String lastname = client_lastname.getValue();
 
@@ -52,9 +53,10 @@ public class SearchByLastname extends Div {
             }
 
         });
-        searchByLastname.addClickShortcut(Key.ENTER);
+        searchByLastnameBtn.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+        searchByLastnameBtn.addClickShortcut(Key.ENTER);
 
-        horizontalLayout.add(searchByLastname, goToClientsList);
+        horizontalLayout.add(searchByLastnameBtn, goToClientsListBtn);
 
         verticalLayout.add(client_lastname, horizontalLayout);
         verticalLayout.setMargin(true);

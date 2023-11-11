@@ -4,6 +4,7 @@ import com.example.application.backend.controller.ClientController;
 import com.example.application.backend.models.Client;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,6 +25,7 @@ public class EditDialog extends Dialog {
         client_name = new TextField("Update your name");
         client_lastname = new TextField("Update your lastname");
         Button btnUpdate = new Button("Update Client", event ->  updateClient(client, clientController));
+        btnUpdate.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         btnUpdate.addClickShortcut(Key.ENTER);
 
         //Data in the textField when the Dialog is opened:
