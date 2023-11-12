@@ -24,43 +24,78 @@ import com.vaadin.flow.router.RouteAlias;
 @PageTitle("Clients")
 @Route(value = "clients", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
-public class ClientsView extends Div {
+public class ClientsView extends VerticalLayout {
 
-    private VerticalLayout verticalLayout;
-    public Grid<ClientDTO> client_grid;
-    private Button btnGoToAddNewClient;
+    public Grid<ClientDTO> client_grid = new Grid<>(ClientDTO.class);
+    private Button btnGoToAddNewClient = new Button("New Client");
     private Button btnDelete;
-    private Button btnDeleteAll;
+    private Button btnDeleteAll = new Button("Delete All");
     private Button btnUpdate;
-    private Button btnSearchByLastname;
-    private HorizontalLayout horizontalLayout;
+    private Button btnSearchByLastname = new Button("Search by lastname");
+    private HorizontalLayout horizontalLayout = new HorizontalLayout();
     private EditDialog editDialog;
     private DeleteClientDialog deleteClientDialog;
     private DeleteAllDialog deleteAllDialog;
-    private TextField clientsSize;
-
+    private TextField clientsSize = new TextField("Number of clients:");;
 
     //Constructor:
     public ClientsView(ClientController clientController) {
 
-        verticalLayout = new VerticalLayout();
-        btnGoToAddNewClient = new Button("New Client", event -> UI.getCurrent().navigate(NewClientView.class));
-        btnGoToAddNewClient.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        client_grid = new Grid<>(ClientDTO.class);
+        btnGoToAddNewClientConfigure();
 
-        btnDeleteAll = new Button("Delete All", event -> {
+        btnDeleteAllConfigure(clientController);
+
+        btnSearchByLastnameConfigure();
+
+        horizontalLayout.add(btnGoToAddNewClient, btnDeleteAll, btnSearchByLastname);
+
+        clientGridConfigure(clientController);
+
+        clientsSizeConfigure(clientController);
+
+        setSpacing(true);
+        setMargin(true);
+        setPadding(true);
+        setSizeFull();
+
+        add(horizontalLayout, client_grid, clientsSize);
+
+    }
+
+    private void clientsSizeConfigure(ClientController clientController) {
+
+        long size = clientController.clientsSize().getBody();
+        clientsSize.setValue(String.valueOf(size));
+
+    }
+
+    private void btnSearchByLastnameConfigure() {
+
+        btnSearchByLastname.addClickListener(event -> UI.getCurrent().navigate(SearchByLastname.class));
+        btnSearchByLastname.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+
+    }
+
+    private void btnGoToAddNewClientConfigure() {
+
+        btnGoToAddNewClient.addClickListener(event -> UI.getCurrent().navigate(NewClientView.class));
+        btnGoToAddNewClient.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+    }
+
+    private void btnDeleteAllConfigure(ClientController clientController) {
+
+        btnDeleteAll.addClickListener( event -> {
             deleteAllDialog = new DeleteAllDialog(clientController, client_grid, clientsSize);
             deleteAllDialog.open();
         });
         btnDeleteAll.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        btnSearchByLastname = new Button("Search by lastname", event -> UI.getCurrent().navigate(SearchByLastname.class));
-        btnSearchByLastname.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        horizontalLayout = new HorizontalLayout();
-        clientsSize = new TextField("Number of clients:");
+    }
+
+    private void clientGridConfigure(ClientController clientController) {
 
         client_grid.setColumns("id_client", "identificationNumber", "name", "lastname");
-        //client_grid.setWidth("80%");
         client_grid.setWidthFull();
         client_grid.setItems(clientController.findAllClients().getBody());
         client_grid.setSelectionMode(Grid.SelectionMode.SINGLE); //1)To be able to use in a Dialog
@@ -97,16 +132,7 @@ public class ClientsView extends Div {
             return btnUpdate;
         }).setHeader("Update");
 
-        long size = clientController.clientsSize().getBody();
-        clientsSize.setValue(String.valueOf(size));
-
-        horizontalLayout.add(btnGoToAddNewClient, btnDeleteAll, btnSearchByLastname);
-
-        verticalLayout.add(horizontalLayout, client_grid, clientsSize);
-        verticalLayout.setMargin(true);
-        verticalLayout.setPadding(true);
-
-        add(verticalLayout);
+        client_grid.getColumns().forEach(column -> column.setAutoWidth(true));
 
     }
 
