@@ -5,7 +5,6 @@ import com.example.application.backend.exceptions.ClientNotFoundException;
 import com.example.application.backend.mapper.ClientMapperInt;
 import com.example.application.backend.models.Client;
 import com.example.application.backend.models.ClientDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +14,15 @@ import java.util.stream.Collectors;
 @Service
 public class ClientServiceImpl implements ClientServiceInt {
 
-    @Autowired
-    private ClientRepository repo;
+    private final ClientRepository repo;
 
-    @Autowired
-    private ClientMapperInt mapper;
+    private final ClientMapperInt mapper;
+
+    //constructor:
+    public ClientServiceImpl(ClientRepository repo, ClientMapperInt mapper){
+        this.repo = repo;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<ClientDTO> findAll() {
@@ -113,6 +116,24 @@ public class ClientServiceImpl implements ClientServiceInt {
     @Override
     public long clientsSize() {
         return repo.count();
+    }
+
+    @Override
+    public List<ClientDTO> searchFromService(String filterText) {
+
+        if (filterText == null || filterText.isEmpty()){
+
+            return findAll(); //call to the method located in this service
+
+        }else{
+            List<Client> clients =  repo.searchFromRepo(filterText);
+
+            List<ClientDTO> dtoClients = clients.stream().map(
+                    client -> mapper.clientToClientDTO(client)
+            ).collect(Collectors.toList());
+
+            return dtoClients;
+        }
     }
 
 }

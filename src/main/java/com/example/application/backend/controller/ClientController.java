@@ -5,7 +5,6 @@ import com.example.application.backend.models.Client;
 import com.example.application.backend.models.ClientDTO;
 import com.example.application.backend.services.ClientServiceInt;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,12 @@ import java.util.Optional;
 @RequestMapping("/client")
 public class ClientController {
 
-    @Autowired
-    private ClientServiceInt service;
+    private final ClientServiceInt service;
+
+    //constructor:
+    public ClientController(ClientServiceInt service){
+        this.service = service;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<ClientDTO>> findAllClients(){
@@ -80,6 +83,14 @@ public class ClientController {
             return new ResponseEntity<>(size, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(size, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/filter_text")
+    public List<ClientDTO> findAllClients(String filterText){
+
+        return service.searchFromService(filterText);
+
     }
 
 }

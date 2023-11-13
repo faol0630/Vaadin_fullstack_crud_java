@@ -17,6 +17,7 @@ public interface ClientServiceInt {
     void deleteAll();
     Optional<ClientDTO> findClientByLastname(String lastname) throws ClientNotFoundException;
     long clientsSize();
+    List<ClientDTO> searchFromService(String filterText);
 
 
 }

@@ -13,13 +13,15 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+
+import java.util.List;
 
 @PageTitle("Clients")
 @Route(value = "clients", layout = MainLayout.class)
@@ -27,16 +29,16 @@ import com.vaadin.flow.router.RouteAlias;
 public class ClientsView extends VerticalLayout {
 
     public Grid<ClientDTO> client_grid = new Grid<>(ClientDTO.class);
-    private Button btnGoToAddNewClient = new Button("New Client");
+    private final Button btnGoToAddNewClient = new Button("New Client");
     private Button btnDelete;
-    private Button btnDeleteAll = new Button("Delete All");
+    private final Button btnDeleteAll = new Button("Delete All");
     private Button btnUpdate;
-    private Button btnSearchByLastname = new Button("Search by lastname");
-    private HorizontalLayout horizontalLayout = new HorizontalLayout();
+    private final Button btnSearchByLastname = new Button("Search by lastname");
     private EditDialog editDialog;
     private DeleteClientDialog deleteClientDialog;
     private DeleteAllDialog deleteAllDialog;
-    private TextField clientsSize = new TextField("Number of clients:");;
+    private final TextField clientsSize = new TextField("Number of clients:");
+    private final TextField filterByLastnameTF = new TextField();
 
     //Constructor:
     public ClientsView(ClientController clientController) {
@@ -47,9 +49,12 @@ public class ClientsView extends VerticalLayout {
 
         btnSearchByLastnameConfigure();
 
-        horizontalLayout.add(btnGoToAddNewClient, btnDeleteAll, btnSearchByLastname);
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(filterByLastnameTF, btnGoToAddNewClient, btnDeleteAll, btnSearchByLastname);
 
         clientGridConfigure(clientController);
+
+        configureFilter(clientController);
 
         clientsSizeConfigure(clientController);
 
@@ -59,6 +64,25 @@ public class ClientsView extends VerticalLayout {
         setSizeFull();
 
         add(horizontalLayout, client_grid, clientsSize);
+
+        updateList(clientController);
+
+    }
+
+    private void configureFilter(ClientController clientController) {
+
+        filterByLastnameTF.setPlaceholder("Filter by lastname...");
+        //filterByLastnameTF.setValue("");
+        filterByLastnameTF.setClearButtonVisible(true);
+        filterByLastnameTF.setValueChangeMode(ValueChangeMode.LAZY);
+        filterByLastnameTF.addValueChangeListener(event -> updateList(clientController));
+
+    }
+
+    private void updateList(ClientController clientController) {
+
+        List<ClientDTO> clients = clientController.findAllClients(filterByLastnameTF.getValue());
+        client_grid.setItems(clients);
 
     }
 
@@ -97,22 +121,21 @@ public class ClientsView extends VerticalLayout {
 
         client_grid.setColumns("id_client", "identificationNumber", "name", "lastname");
         client_grid.setWidthFull();
-        client_grid.setItems(clientController.findAllClients().getBody());
+
         client_grid.setSelectionMode(Grid.SelectionMode.SINGLE); //1)To be able to use in a Dialog
 
         //Add delete button inside the grid:
-        client_grid.addComponentColumn(client -> {
-
-            btnDelete = new Button("Delete", event -> {
-                deleteClientDialog = new DeleteClientDialog(client, clientController, client_grid, clientsSize);
-                deleteClientDialog.open();
-            });//Create a button in each row
-            btnDelete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
-            return btnDelete;
-        }).setHeader("Delete");
+        clientGridAddBtnDelete(clientController);
 
         //Add update button inside the grid:
+        clientGridAddBtnUpdate(clientController);
+
+        client_grid.getColumns().forEach(column -> column.setAutoWidth(true));
+
+    }
+
+    private void clientGridAddBtnUpdate(ClientController clientController) {
+
         client_grid.addComponentColumn(client -> {
             btnUpdate = new Button("Update", event -> {
                 Client selectedClient = clientController.findClientById(client.getId_client());
@@ -123,7 +146,8 @@ public class ClientsView extends VerticalLayout {
                 editDialog.addOpenedChangeListener(e ->{
                     if (!e.isOpened()){
                         //if the Dialog is not open:
-                        client_grid.setItems(clientController.findAllClients().getBody());
+                        //client_grid.setItems(clientController.findAllClients().getBody());
+                        updateList(clientController);
                     }
                 });
             });
@@ -131,9 +155,20 @@ public class ClientsView extends VerticalLayout {
 
             return btnUpdate;
         }).setHeader("Update");
+    }
 
-        client_grid.getColumns().forEach(column -> column.setAutoWidth(true));
+    private void clientGridAddBtnDelete(ClientController clientController){
 
+        client_grid.addComponentColumn(client -> {
+
+            btnDelete = new Button("Delete", event -> {
+                deleteClientDialog = new DeleteClientDialog(client, clientController, client_grid, clientsSize);
+                deleteClientDialog.open();
+            });//Create a button in each row
+            btnDelete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+            return btnDelete;
+        }).setHeader("Delete");
     }
 
 }
