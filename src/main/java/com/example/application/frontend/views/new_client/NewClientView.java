@@ -9,8 +9,10 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -20,17 +22,17 @@ import com.vaadin.flow.router.Route;
 @Route(value = "new_client", layout = MainLayout.class)
 public class NewClientView extends Div {
 
-    private final VerticalLayout verticalLayout;
     private final TextField identityNumber;
     private final TextField client_name;
     private final TextField client_lastname;
     private final TextField passwordTF;
     private final Button newClientBtn;
+    private final FormLayout formLayout;
 
     //Constructor:
     public NewClientView(ClientController clientController){
 
-        verticalLayout = new VerticalLayout();
+        formLayout = new FormLayout();
         identityNumber = new TextField("Your identity number: ");
         client_name = new TextField("Your name: ");
         client_lastname = new TextField("Your lastname: ");
@@ -51,15 +53,17 @@ public class NewClientView extends Div {
             }
 
         });
-        newClientBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newClientBtn.addClickShortcut(Key.ENTER);
 
-        verticalLayout.add(identityNumber, passwordTF, client_name, client_lastname, newClientBtn);
-        verticalLayout.setMargin(true);
-        verticalLayout.setPadding(true);
-        verticalLayout.setSpacing(true);
+        NewClientViewCss.newClientBtnCss(newClientBtn);
+        NewClientViewCss.formLayoutCss(formLayout);
+        formLayout.add(identityNumber, passwordTF, client_name, client_lastname, newClientBtn);
 
-        add(verticalLayout);
+        //css styles:
+        setSizeFull();
+        setHeightFull();
+        getElement().getStyle().set("display", "flex");
+        getElement().getStyle().set("justify-content", "center"); //horizontally centered
+        add(formLayout);
 
     }
 

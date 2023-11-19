@@ -120,7 +120,6 @@ public class ClientsView extends VerticalLayout {
     private void clientGridConfigure(ClientController clientController) {
 
         client_grid.setColumns("id_client", "identificationNumber", "name", "lastname");
-        client_grid.setWidthFull();
 
         client_grid.setSelectionMode(Grid.SelectionMode.SINGLE); //1)To be able to use in a Dialog
 
@@ -131,6 +130,9 @@ public class ClientsView extends VerticalLayout {
         clientGridAddBtnUpdate(clientController);
 
         client_grid.getColumns().forEach(column -> column.setAutoWidth(true));
+
+        ClientsViewCss.gridCss(client_grid);
+
 
     }
 
